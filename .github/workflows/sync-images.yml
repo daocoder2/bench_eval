@@ -1,0 +1,22 @@
+name: eval_images_sync
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  eval_images:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0,1,2,3,4,5,6,7]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/workflows/internal
+          sparse-checkout-cone-mode: false
+      - name: Sync  Docker Images
+        env:
+          BATCH: ${{ matrix.batch }}
+          DEST_CREDS: ${{ secrets.ALIYUN_USERNAME_AGENT }}:${{ secrets.ALIYUN_PASSWORD_AGENT }}
+        run: bash .github/workflows/internal/terminal-bench-2/sync-images.sh
