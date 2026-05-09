@@ -17,7 +17,8 @@ for (( i=start; i<end; i++ )); do
   img="${images[$i]}"
   echo "[$((i+1))/${total}] Syncing ${img} ..."
   skopeo copy "docker://${img}" \
-    # "docker://agent-registry.cn-beijing.cr.aliyuncs.com/docker-private/aiaas/${img}" \
     "docker://acr-maas-bj-registry.cn-beijing.cr.aliyuncs.com/maas/${img}" \
     --dest-creds="${DEST_CREDS}" || echo "WARN: failed to sync ${img}, continuing..."
 done
+
+# "docker://agent-registry.cn-beijing.cr.aliyuncs.com/docker-private/aiaas/${img}" \
