@@ -20,4 +20,4 @@ jobs:
           BATCH: ${{ matrix.batch }}
           # DEST_CREDS: ${{ secrets.ALIYUN_USERNAME_AGENT }}:${{ secrets.ALIYUN_PASSWORD_AGENT }}
           DEST_CREDS: ${{ secrets.ALIYUN_USERNAME_MAAS }}:${{ secrets.ALIYUN_PASSWORD_MAAS }}
-        run: bash .github/workflows/internal/terminal-bench-2/sync-images.sh
+        run: bash .github/workflows/internal/swebench_multilingual/sync-images.sh
