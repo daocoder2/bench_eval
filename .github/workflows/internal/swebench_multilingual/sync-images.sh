@@ -4,7 +4,7 @@ mapfile -t images < .github/workflows/internal/swebench_multilingual/images.txt
 images=($(printf '%s\n' "${images[@]}" | grep -v '^$'))
 total=${#images[@]}
 batch=${BATCH:?}
-batch_count=10
+batch_count=8
 batch_size=$(( (total + batch_count - 1) / batch_count ))
 start=$(( batch * batch_size ))
 end=$(( start + batch_size ))
