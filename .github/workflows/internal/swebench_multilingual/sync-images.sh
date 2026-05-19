@@ -12,21 +12,31 @@ end=$(( start + batch_size ))
 
 echo "Total: ${total}, Batch: ${batch}/${batch_count}, Processing: ${start}-$((end-1))"
 
-# 统计成功/失败
 success=0
 failed=0
+skipped=0
 
 for (( i=start; i<end; i++ )); do
   img="${images[$i]}"
-  echo "[$((i+1))/${total}] Syncing ${img} ..."
-  if skopeo copy "docker://${img}" \
-    "docker://acr-maas-bj-registry.cn-beijing.cr.aliyuncs.com/maas/${img}" \
-    --dest-creds="${DEST_CREDS}"; then
+  target="acr-maas-bj-registry.cn-beijing.cr.aliyuncs.com/maas/${img}"
+  
+  echo -n "[$((i+1))/${total}] ${img} ... "
+  
+  # 检查目标镜像是否已存在
+  if skopeo inspect "docker://${target}" --creds="${DEST_CREDS}" &>/dev/null; then
+    echo "SKIP (already exists)"
+    ((skipped++))
+    continue
+  fi
+  
+  # 同步镜像
+  if skopeo copy "docker://${img}" "docker://${target}" --dest-creds="${DEST_CREDS}"; then
+    echo "OK"
     ((success++))
   else
-    echo "WARN: failed to sync ${img}, continuing..."
+    echo "FAILED"
     ((failed++))
   fi
 done
 
-echo "Batch complete: ${success} succeeded, ${failed} failed"
+echo "Batch complete: ${success} succeeded, ${skipped} skipped, ${failed} failed"
