@@ -18,7 +18,7 @@ skipped=0
 
 for (( i=start; i<end; i++ )); do
   img="${images[$i]}"
-  target="acr-maas-bj-registry.cn-beijing.cr.aliyuncs.com/maas/${img}"
+  target="acr-maas-bj-registry.cn-beijing.cr.aliyuncs.com/eval/${img}"
   
   echo -n "[$((i+1))/${total}] ${img} ... "
   
